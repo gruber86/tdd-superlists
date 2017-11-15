@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import unittest
@@ -18,10 +19,8 @@ class NewVisitorTest(unittest.TestCase):
         # tytul 'Listy' w naglowku strony
         self.assertIn('Listy', self.browser.title)
         header_text = self.browser.find_element_by_tag_name('h1').text
-        self.assertIn('Listy', header_text)
-        # "Tytul okna przegladarki: " + browser.title
+        self.assertIn('Twoja', header_text)
 
-        # Od razu zostaje zachęcona, aby wpisać rzecz do zrobienia.
         inputbox = self.browser.find_element_by_id('id_new_item')
         self.assertEqual(
             inputbox.get_attribute('placeholder'),
@@ -31,11 +30,12 @@ class NewVisitorTest(unittest.TestCase):
         # W polu tekstowym wpisała "Kupić pawie pióra" (hobby Edyty # polega na tworzeniu ozdobnych przynęt).
         inputbox.send_keys('Kupic pawie piora')
         # Po naciśnięciu klawisza Enter strona została uaktualniona i wyświetla # "1: Kupić pawie pióra" jako element listy rzeczy do zrobienia.
-        inputbox.send_keys(keys.ENTER)
+        inputbox.send_keys(Keys.ENTER)
         table = self.browser.find_element_by_id('id_list_table')
         rows = table.find_elements_by_tag_name('tr')
         self.assertTrue(
-            any(row.text == '1: Kupic pawie piora' for row in rows)
+            any(row.text == '1: Kupic pawie piora' for row in rows),
+            "Nowy element nie znajduje się w tabeli."
         )
                 # Na stronie nadal znajduje się pole tekstowe zachęcające do podania kolejnego zadania.
         # Edyta wpisała "Użyć pawich piór do zrobienia przynęty" (Edyta jest niezwykle skrupulatna).
